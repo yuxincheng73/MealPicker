@@ -38,6 +38,20 @@ public class Recipe {
     @NotBlank
     private String description;
 
+    @NotBlank
+    private String instruction;
+
+    @NotBlank
+    private String prepTime;
+
+    @NotBlank
+    private String cookingTime;
+
+    private String servingSize;
+    private String protein;
+    private String carbs;
+    private String calories;
+
     @ManyToOne
     @JoinColumn(name = "category_recipe_id")
     private CategoryRecipe categoryRecipe;
