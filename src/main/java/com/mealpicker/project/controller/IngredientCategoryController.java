@@ -52,21 +52,21 @@ public class IngredientCategoryController {
 
     // Add ingredient category
     @PostMapping("/admin/ingredient_categories")
-    public ResponseEntity<IngredientCategoryDTO> addIngredient(@Valid @RequestBody IngredientCategoryDTO IngredientCategoryDTO){
-        IngredientCategoryDTO savedIngredientCategoryDTO = ingredientCategoryService.addIngredientCategory(IngredientCategoryDTO);
+    public ResponseEntity<IngredientCategoryDTO> addIngredientCategory(@Valid @RequestBody IngredientCategoryDTO ingredientCategoryDTO){
+        IngredientCategoryDTO savedIngredientCategoryDTO = ingredientCategoryService.addIngredientCategory(ingredientCategoryDTO);
         return new ResponseEntity<>(savedIngredientCategoryDTO, HttpStatus.CREATED);
     }
     // Update ingredient category
     @PutMapping("/admin/ingredient_categories/{ingredientCategoryId}")
-    public ResponseEntity<IngredientCategoryDTO> updateIngredient(@Valid @RequestBody IngredientCategoryDTO ingredientCategoryDTO,
+    public ResponseEntity<IngredientCategoryDTO> updateIngredientCategory(@Valid @RequestBody IngredientCategoryDTO ingredientCategoryDTO,
                                                     @PathVariable Long ingredientCategoryId){
-        IngredientCategoryDTO updatedingredientCategoryDTO = ingredientCategoryService.updateIngredientCategory(ingredientCategoryId, ingredientCategoryDTO);
-        return new ResponseEntity<>(updatedingredientCategoryDTO, HttpStatus.OK);
+        IngredientCategoryDTO updatedIngredientCategoryDTO = ingredientCategoryService.updateIngredientCategory(ingredientCategoryId, ingredientCategoryDTO);
+        return new ResponseEntity<>(updatedIngredientCategoryDTO, HttpStatus.OK);
     }
 
     // Delete ingredient category
     @DeleteMapping("/admin/ingredient_categories/{ingredientCategoryId}")
-    public ResponseEntity<IngredientCategoryDTO> deleteIngredient(@PathVariable Long ingredientCategoryId){
+    public ResponseEntity<IngredientCategoryDTO> deleteIngredientCategory(@PathVariable Long ingredientCategoryId){
         IngredientCategoryDTO deletedIngredientCategory = ingredientCategoryService.deleteIngredientCategory(ingredientCategoryId);
         return new ResponseEntity<>(deletedIngredientCategory, HttpStatus.OK);
     }
