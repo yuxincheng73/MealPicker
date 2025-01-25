@@ -1,5 +1,11 @@
 package com.mealpicker.project.repositories;
 
-public interface MealsSelectedRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.mealpicker.project.model.MealsSelected;
+
+@Repository
+public interface MealsSelectedRepository extends JpaRepository<MealsSelected, Long> {
 
 }

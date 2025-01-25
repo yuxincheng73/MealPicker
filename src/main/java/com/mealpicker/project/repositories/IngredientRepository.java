@@ -1,6 +1,7 @@
 package com.mealpicker.project.repositories;
 
 import com.mealpicker.project.model.Ingredient;
+import com.mealpicker.project.model.IngredientCategory;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IngredientRepository extends JpaRepository<Ingredient, Long>, JpaSpecificationExecutor<Ingredient> {
     // Return Page type for pagination and sorting
-    Page<Ingredient> findByCategoryOrderByPriceAsc(Category category, Pageable pageDetails);
+    Page<Ingredient> findByIngredientCategoryOrderByIngredientNameAsc(IngredientCategory ingredientCategory, Pageable pageDetails);
 
-    Page<Ingredient> findByProductNameLikeIgnoreCase(String keyword, Pageable pageDetails);
+    Page<Ingredient> findByIngredientNameLikeIgnoreCase(String keyword, Pageable pageDetails);
 }
