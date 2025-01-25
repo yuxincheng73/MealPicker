@@ -46,7 +46,7 @@ public class IngredientController {
     }
 
     // Get ingredient by category
-    @GetMapping("/public/ingredient_category/{ingredientCategoryId}/ingredient")
+    @GetMapping("/public/ingredient_categories/{ingredientCategoryId}/ingredients")
     public ResponseEntity<IngredientResponse> getIngredientsByCategory(@PathVariable Long ingredientCategoryId,
                                                                  @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
                                                                  @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
@@ -68,7 +68,7 @@ public class IngredientController {
     }
 
     // Add ingredient
-    @PostMapping("/admin/ingredient_category/{ingredientCategoryId}/ingredient")
+    @PostMapping("/admin/ingredient_categories/{ingredientCategoryId}/ingredients")
     public ResponseEntity<IngredientDTO> addIngredient(@Valid @RequestBody IngredientDTO IngredientDTO,
                                                  @PathVariable Long ingredientCategoryId){
         IngredientDTO savedIngredientDTO = ingredientService.addIngredient(ingredientCategoryId, IngredientDTO);
