@@ -30,7 +30,7 @@ public class CategoryRecipeController {
     @Autowired
     CategoryRecipeService categoryRecipeService;
 
-    // Get all ingredient cuisines
+    // Get all recipe categories
     @GetMapping("/public/recipe_categories")
     public ResponseEntity<CategoryRecipeResponse> getAllCategoryRecipes(
             @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
@@ -42,7 +42,7 @@ public class CategoryRecipeController {
         return new ResponseEntity<>(categoryRecipeResponse, HttpStatus.OK);
     }
 
-    // Get cuisines by keyword
+    // Get recipe category by keyword
     @GetMapping("/public/recipe_categories/keyword/{keyword}")
     public ResponseEntity<CategoryRecipeResponse> getCategoryRecipeByKeyword(@PathVariable String keyword,
             @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
@@ -53,13 +53,13 @@ public class CategoryRecipeController {
         return new ResponseEntity<>(categoryRecipeResponse, HttpStatus.FOUND);
     }
 
-    // Add cuisine
+    // Add recipe category
     @PostMapping("/admin/recipe_categories")
     public ResponseEntity<CategoryRecipeDTO> addCategoryRecipe(@Valid @RequestBody CategoryRecipeDTO categoryRecipeDTO){
         CategoryRecipeDTO savedCategoruRecipeDTO = categoryRecipeService.addCategoryRecipe(categoryRecipeDTO);
         return new ResponseEntity<>(savedCategoruRecipeDTO, HttpStatus.CREATED);
     }
-    // Update cuisine
+    // Update recipe category
     @PutMapping("/admin/recipe_categories/{categoryRecipeId}")
     public ResponseEntity<CategoryRecipeDTO> updateCategoryRecipe(@Valid @RequestBody CategoryRecipeDTO categoryRecipeDTO,
                                                     @PathVariable Long categoryRecipeId){
@@ -67,7 +67,7 @@ public class CategoryRecipeController {
         return new ResponseEntity<>(updatedCategoruRecipeDTO, HttpStatus.OK);
     }
 
-    // Delete cuisine
+    // Delete recipe category
     @DeleteMapping("/admin/recipe_categories/{categoryRecipeId}")
     public ResponseEntity<CategoryRecipeDTO> deleteCategoryRecipe(@PathVariable Long categoryRecipeId){
         CategoryRecipeDTO deletedCategoryRecipeDTO = categoryRecipeService.deleteCategoryRecipe(categoryRecipeId);
