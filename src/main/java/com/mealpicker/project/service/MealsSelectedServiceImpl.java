@@ -210,6 +210,7 @@ public class MealsSelectedServiceImpl implements MealsSelectedService {
         return mealsSelectedDTO;
     }
 
+    // Do I really need this function if Recipe cascades changes to MealItem??
     @Override
     @Transactional
     public String deleteRecipeFromMealsSelected(Long mealsSelectedId, Long recipeId) {
@@ -223,6 +224,12 @@ public class MealsSelectedServiceImpl implements MealsSelectedService {
         }
 
         mealItemRepository.deleteMealItemByRecipeIdAndMealsSelectedId(mealsSelectedId, recipeId);
+        
+        // Do I need to remove this mealItem from mealsSelected array of mealItems and then save mealsSelected??
+        List<MealItem> mealItems = mealsSelected.getMealItems();
+        mealItems.removeIf(mi -> mi.getRecipe().getRecipeId().equals(recipeId));
+        mealsSelected.setMealItems(mealItems);
+
         mealsSelectedRepository.save(mealsSelected);
 
         return "Recipe " + mealItem.getRecipe().getRecipeName() + " removed from the meals selected cart !!!";
@@ -246,6 +253,13 @@ public class MealsSelectedServiceImpl implements MealsSelectedService {
 
         mealItem.setRecipe(recipe);
         mealItemRepository.save(mealItem);
+
+        // Do I need to update this mealItem from mealsSelected array of mealItems and then save mealsSelected??
+        List<MealItem> mealItems = mealsSelected.getMealItems();
+        mealItems.removeIf(mi -> mi.getRecipe().getRecipeId().equals(recipeId));
+        mealItems.add(mealItem);
+        mealsSelected.setMealItems(mealItems);
+
         mealsSelectedRepository.save(mealsSelected);
     }
 
