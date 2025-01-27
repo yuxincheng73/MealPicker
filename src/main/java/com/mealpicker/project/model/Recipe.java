@@ -51,6 +51,7 @@ public class Recipe {
     private String protein;
     private String carbs;
     private String calories;
+    private Integer quantity;
 
     @ManyToOne
     @JoinColumn(name = "category_recipe_id")

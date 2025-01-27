@@ -316,6 +316,7 @@ public class RecipeServiceImpl implements RecipeService {
         recipeFromDb.setProtein(recipeToUpdate.getProtein());
         recipeFromDb.setCarbs(recipeToUpdate.getCarbs());
         recipeFromDb.setCalories(recipeToUpdate.getCalories());
+        recipeFromDb.setQuantity(recipeToUpdate.getQuantity());
 
         List<Ingredient> ingredientsToUpdate = recipeDTO.getIngredients().stream()
                 .map(i -> modelMapper.map(i, Ingredient.class)).collect(Collectors.toList());
@@ -374,6 +375,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    @Transactional
     public void updateIngredientInRecipes(Long recipeId, Long ingredientId) {
         Recipe recipe = recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Recipe", "recipeId", recipeId));
@@ -391,6 +393,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    @Transactional
     public String deleteIngredientFromRecipe(Long recipeId, Long ingredientId) {
         Recipe recipe = recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Recipe", "recipeId", recipeId));

@@ -39,6 +39,7 @@ public class RecipeDTO {
     private String protein;
     private String carbs;
     private String calories;
+    private Integer quantity;
 
     //private CategoryRecipe categoryRecipe;
 

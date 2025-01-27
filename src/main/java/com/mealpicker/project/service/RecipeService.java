@@ -11,9 +11,10 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 public interface RecipeService {
-
+    @Transactional
     void updateIngredientInRecipes(Long recipeId, Long ingredientId);
 
+    @Transactional
     String deleteIngredientFromRecipe(Long recipeId, Long ingredientId);
 
     RecipeResponse getAllRecipes(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder, String keyword,

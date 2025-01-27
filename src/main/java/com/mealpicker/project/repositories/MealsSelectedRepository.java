@@ -15,4 +15,7 @@ public interface MealsSelectedRepository extends JpaRepository<MealsSelected, Lo
     @Query("SELECT ms FROM MealsSelected ms JOIN FETCH ms.mealItems mi JOIN FETCH mi.recipe r WHERE r.id = ?1")
     List<MealsSelected> findMealsSelectedByRecipeId(Long recipeId);
 
+    @Query("SELECT ms FROM MealsSelected ms WHERE ms.user.email = ?1")
+    MealsSelected findMealsSelectedByEmail(String emailId);
+
 }
