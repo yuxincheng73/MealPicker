@@ -292,6 +292,20 @@ public class RecipeServiceImpl implements RecipeService {
             recipe.setRecipeImage("default.png");
             recipe.setCategoryRecipe(categoryRecipe);
             recipe.setCuisine(cuisine);
+            List<Ingredient> ingredientsToInsert = recipeDTO.getIngredients().stream()
+                .map(i -> modelMapper.map(i, Ingredient.class)).collect(Collectors.toList());
+        //     List<Long> ingredients = recipeDTO.getIngredients().stream()
+        //         .map(i -> modelMapper.map(i, Ingredient.class).getIngredientId()).collect(Collectors.toList());
+            List<Ingredient> ingredients = new ArrayList<>();
+            for (Ingredient value : ingredientsToInsert) {
+                Long ingredientId = value.getIngredientId();
+                Ingredient ingredient = ingredientRepository.findById(ingredientId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Ingredient", "ingredientId", ingredientId));
+                ingredients.add(ingredient);
+            }
+            recipe.setIngredients(ingredients);
+            
             Recipe savedRecipe = recipeRepository.save(recipe);
             return modelMapper.map(savedRecipe, RecipeDTO.class);
         } else {
