@@ -41,7 +41,7 @@ public class RecipeController {
             @RequestParam(name = "recipeCuisine", required = false) String recipeCuisine,
             @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
-            @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_PRODUCTS_BY, required = false) String sortBy,
+            @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_RECIPES_BY, required = false) String sortBy,
             @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIR, required = false) String sortOrder
     ){
         RecipeResponse recipeResponse = recipeService.getAllRecipes(pageNumber, pageSize, sortBy, sortOrder, keyword, recipeCategory, recipeCuisine);
@@ -53,7 +53,7 @@ public class RecipeController {
     public ResponseEntity<RecipeResponse> getRecipesByCategoryRecipe(@PathVariable Long recipeCategoryId,
                                                                  @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
                                                                  @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
-                                                                 @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_PRODUCTS_BY, required = false) String sortBy,
+                                                                 @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_RECIPES_BY, required = false) String sortBy,
                                                                  @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIR, required = false) String sortOrder){
         RecipeResponse recipeResponse = recipeService.searchByCategoryRecipe(recipeCategoryId, pageNumber, pageSize, sortBy, sortOrder);
         return new ResponseEntity<>(recipeResponse, HttpStatus.OK);
@@ -64,7 +64,7 @@ public class RecipeController {
     public ResponseEntity<RecipeResponse> getRecipesByIngredient(@PathVariable String ingredientKeyword,
                                                                  @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
                                                                  @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
-                                                                 @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_PRODUCTS_BY, required = false) String sortBy,
+                                                                 @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_RECIPES_BY, required = false) String sortBy,
                                                                  @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIR, required = false) String sortOrder){
         RecipeResponse recipeResponse = recipeService.searchByIngredient(ingredientKeyword, pageNumber, pageSize, sortBy, sortOrder);
         return new ResponseEntity<>(recipeResponse, HttpStatus.OK);
@@ -75,7 +75,7 @@ public class RecipeController {
     public ResponseEntity<RecipeResponse> getRecipesByCuisine(@PathVariable Long cuisineId,
                                                                  @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
                                                                  @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
-                                                                 @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_PRODUCTS_BY, required = false) String sortBy,
+                                                                 @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_RECIPES_BY, required = false) String sortBy,
                                                                  @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIR, required = false) String sortOrder){
         RecipeResponse recipeResponse = recipeService.searchByCuisine(cuisineId, pageNumber, pageSize, sortBy, sortOrder);
         return new ResponseEntity<>(recipeResponse, HttpStatus.OK);
@@ -86,7 +86,7 @@ public class RecipeController {
     public ResponseEntity<RecipeResponse> getRecipesByKeyword(@PathVariable String keyword,
                                                                 @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
                                                                 @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
-                                                                @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_PRODUCTS_BY, required = false) String sortBy,
+                                                                @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_RECIPES_BY, required = false) String sortBy,
                                                                 @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIR, required = false) String sortOrder){
         RecipeResponse recipeResponse = recipeService.searchRecipeByKeyword(keyword, pageNumber, pageSize, sortBy, sortOrder);
         return new ResponseEntity<>(recipeResponse, HttpStatus.FOUND);

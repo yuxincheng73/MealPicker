@@ -38,7 +38,7 @@ public class IngredientController {
             @RequestParam(name = "ingredientCategory", required = false) String ingredientCategory,
             @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
-            @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_PRODUCTS_BY, required = false) String sortBy,
+            @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_INGREDIENTS_BY, required = false) String sortBy,
             @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIR, required = false) String sortOrder
     ){
         IngredientResponse ingredientResponse = ingredientService.getAllIngredients(pageNumber, pageSize, sortBy, sortOrder, keyword, ingredientCategory);
@@ -50,7 +50,7 @@ public class IngredientController {
     public ResponseEntity<IngredientResponse> getIngredientsByCategory(@PathVariable Long ingredientCategoryId,
                                                                  @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
                                                                  @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
-                                                                 @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_PRODUCTS_BY, required = false) String sortBy,
+                                                                 @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_INGREDIENTS_BY, required = false) String sortBy,
                                                                  @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIR, required = false) String sortOrder){
         IngredientResponse ingredientResponse = ingredientService.searchByIngredientCategory(ingredientCategoryId, pageNumber, pageSize, sortBy, sortOrder);
         return new ResponseEntity<>(ingredientResponse, HttpStatus.OK);
@@ -61,7 +61,7 @@ public class IngredientController {
     public ResponseEntity<IngredientResponse> getIngredientsByKeyword(@PathVariable String keyword,
                                                                 @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
                                                                 @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
-                                                                @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_PRODUCTS_BY, required = false) String sortBy,
+                                                                @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_INGREDIENTS_BY, required = false) String sortBy,
                                                                 @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIR, required = false) String sortOrder){
         IngredientResponse ingredientResponse = ingredientService.searchIngredientByKeyword(keyword, pageNumber, pageSize, sortBy, sortOrder);
         return new ResponseEntity<>(ingredientResponse, HttpStatus.FOUND);

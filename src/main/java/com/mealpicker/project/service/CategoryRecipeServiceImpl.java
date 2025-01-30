@@ -104,7 +104,7 @@ public class CategoryRecipeServiceImpl implements CategoryRecipeService {
     @Transactional
     public CategoryRecipeDTO addCategoryRecipe(CategoryRecipeDTO categoryRecipeDTO) {
         CategoryRecipe categoryRecipe = modelMapper.map(categoryRecipeDTO, CategoryRecipe.class);
-        CategoryRecipe categoryRecipeFromDb = categoryRecipeRepository.findByIngredientCategoryName(categoryRecipe.getCategoryRecipeName());
+        CategoryRecipe categoryRecipeFromDb = categoryRecipeRepository.findByCategoryRecipeName(categoryRecipe.getCategoryRecipeName());
         if (categoryRecipeFromDb != null)
             throw new APIException("Recipe Category with the name " + categoryRecipe.getCategoryRecipeName() + " already exists !!!");
         CategoryRecipe savedCategoryRecipe = categoryRecipeRepository.save(categoryRecipe);

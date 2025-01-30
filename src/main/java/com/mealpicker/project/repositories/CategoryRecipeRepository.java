@@ -12,6 +12,6 @@ public interface CategoryRecipeRepository extends JpaRepository<CategoryRecipe, 
 
     Page<CategoryRecipe> findByCategoryRecipeNameLikeIgnoreCase(String string, Pageable pageDetails);
 
-    CategoryRecipe findByIngredientCategoryName(String categoryRecipeName);
+    CategoryRecipe findByCategoryRecipeName(String categoryRecipeName);
 
 }

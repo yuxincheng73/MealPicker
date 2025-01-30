@@ -98,6 +98,7 @@ public class IngredientCategoryServiceImpl implements IngredientCategoryService 
         IngredientCategory ingredientCategoryFromDb = ingredientCategoryRepository.findByIngredientCategoryName(ingredientCategory.getIngredientCategoryName());
         if (ingredientCategoryFromDb != null)
             throw new APIException("Ingredient Category with the name " + ingredientCategory.getIngredientCategoryName() + " already exists !!!");
+
         IngredientCategory savedIngredientCategory = ingredientCategoryRepository.save(ingredientCategory);
         return modelMapper.map(savedIngredientCategory, IngredientCategoryDTO.class);
     }
@@ -108,7 +109,7 @@ public class IngredientCategoryServiceImpl implements IngredientCategoryService 
             IngredientCategoryDTO ingredientCategoryDTO) {
         IngredientCategory ingredientCategoryFromDb = ingredientCategoryRepository.findById(ingredientCategoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ingredient Category","ingredientCategoryId", ingredientCategoryId));
-
+                
         IngredientCategory ingredientCategoryToUpdate = modelMapper.map(ingredientCategoryDTO, IngredientCategory.class);
         ingredientCategoryFromDb.setIngredientCategoryName(ingredientCategoryToUpdate.getIngredientCategoryName());
 
