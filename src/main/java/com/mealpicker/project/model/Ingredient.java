@@ -49,6 +49,6 @@ public class Ingredient {
     // @optimisticLock(excluded = true)
     private IngredientCategory ingredientCategory;
 
-    @ManyToMany(mappedBy = "ingredients")
+    @ManyToMany(mappedBy = "ingredients", fetch = FetchType.EAGER)
     private List<Recipe> recipes = new ArrayList<>();
 }

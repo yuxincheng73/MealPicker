@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails.Addre
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class MealsSelected {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

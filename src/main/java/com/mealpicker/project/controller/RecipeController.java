@@ -60,6 +60,7 @@ public class RecipeController {
     }
 
     // Get recipe by ingredient
+    // CONSIDERATION: Maybe change to take list of ingredients instead of frontend needing to send many requests for each ingredient separately
     @GetMapping("/public/ingredients/{ingredientKeyword}/recipes")
     public ResponseEntity<RecipeResponse> getRecipesByIngredient(@PathVariable String ingredientKeyword,
                                                                  @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,

@@ -102,6 +102,9 @@ public class RecipeServiceImpl implements RecipeService {
         Page<Recipe> pageRecipes = recipeRepository.findAll(spec, pageDetails);
 
         List<Recipe> recipes = pageRecipes.getContent();
+        if(recipes.isEmpty()){
+                throw new APIException("No recipes!!");
+        }
 
         List<RecipeDTO> recipeDTOS = recipes.stream()
                 .map(recipe -> {
@@ -159,6 +162,7 @@ public class RecipeServiceImpl implements RecipeService {
         return recipeResponse;
     }
 
+    // CONSIDERATION: Maybe change to take list of ingredients instead of frontend needing to send many requests for each ingredient separately
     @Override
     public RecipeResponse searchByIngredient(String ingredientKeyword, Integer pageNumber, Integer pageSize, String sortBy,
             String sortOrder) {
@@ -334,9 +338,21 @@ public class RecipeServiceImpl implements RecipeService {
         recipeFromDb.setCalories(recipeToUpdate.getCalories());
         recipeFromDb.setQuantity(recipeToUpdate.getQuantity());
 
+        // List<Ingredient> ingredientsToUpdate = recipeDTO.getIngredients().stream()
+        //         .map(i -> modelMapper.map(i, Ingredient.class)).collect(Collectors.toList());
+        // recipeFromDb.setIngredients(ingredientsToUpdate);
+
         List<Ingredient> ingredientsToUpdate = recipeDTO.getIngredients().stream()
                 .map(i -> modelMapper.map(i, Ingredient.class)).collect(Collectors.toList());
-        recipeFromDb.setIngredients(ingredientsToUpdate);
+        List<Ingredient> ingredients = new ArrayList<>();
+        for (Ingredient value : ingredientsToUpdate) {
+                Long ingredientId = value.getIngredientId();
+                Ingredient ingredient = ingredientRepository.findById(ingredientId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Ingredient", "ingredientId", ingredientId));
+                ingredients.add(ingredient);
+        }
+        recipeFromDb.setIngredients(ingredients);
 
         Recipe savedRecipe = recipeRepository.save(recipeFromDb);
 
@@ -398,7 +414,7 @@ public class RecipeServiceImpl implements RecipeService {
 
         Ingredient ingredient = ingredientRepository.findById(ingredientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ingredient", "ingredientId", ingredientId));
-                
+
         // Update ingredient in recipe
         List<Ingredient> ingredients = recipe.getIngredients();
         ingredients.removeIf(i -> i.getIngredientId().equals(ingredientId));

@@ -19,11 +19,13 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Table(name = "cuisines",
         uniqueConstraints = {
         @UniqueConstraint(columnNames = "cuisine_name")

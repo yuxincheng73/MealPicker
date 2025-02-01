@@ -17,7 +17,7 @@ import com.mealpicker.project.model.Recipe;
 @Repository
 public interface RecipeRepository extends JpaRepository<Recipe, Long>, JpaSpecificationExecutor<Recipe> {
 
-    @Query("SELECT r FROM Recipe r JOIN FETCH r.ingredients i WHERE i.id = ?1")
+    @Query("SELECT r FROM Recipe r JOIN r.ingredients i WHERE i.id = ?1")
     List<Recipe> findRecipesByIngredientId(Long ingredientId);
 
     Page<Recipe> findByCategoryRecipeOrderByRecipeNameAsc(CategoryRecipe categoryRecipe, Pageable pageDetails);
@@ -26,7 +26,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long>, JpaSpecif
 
     Page<Recipe> findByRecipeNameLikeIgnoreCase(String string, Pageable pageDetails);
 
-    @Query("SELECT r FROM Recipe r JOIN FETCH r.ingredients i WHERE i.ingredientName like ?1")
+    @Query("SELECT r FROM Recipe r JOIN r.ingredients i JOIN FETCH r.ingredients WHERE i.ingredientName like ?1")
     Page<Recipe> findByIngredientKeywordLikeIgnoreCase(String string, Pageable pageDetails);
 
 }

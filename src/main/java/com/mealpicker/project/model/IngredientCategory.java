@@ -16,6 +16,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -25,6 +26,7 @@ import lombok.NoArgsConstructor;
         uniqueConstraints = {
         @UniqueConstraint(columnNames = "ingredient_category_name")
         })
+@ToString
 public class IngredientCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

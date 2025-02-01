@@ -23,11 +23,13 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Table(name = "recipes",
         uniqueConstraints = {
         @UniqueConstraint(columnNames = "recipe_name")
@@ -71,7 +73,7 @@ public class Recipe {
     @JoinColumn(name = "cuisine_id")
     private Cuisine cuisine;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "recipe_ingredients",
                 joinColumns = @JoinColumn(name = "recipe_id"),
                 inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
