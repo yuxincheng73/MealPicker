@@ -121,6 +121,7 @@ public class RecipeController {
     @DeleteMapping("/admin/recipes/{recipeId}")
     public ResponseEntity<RecipeDTO> deleteRecipe(@PathVariable Long recipeId){
         RecipeDTO deletedRecipe = recipeService.deleteRecipe(recipeId);
+        System.out.println("RECIPE DELETED");
         return new ResponseEntity<>(deletedRecipe, HttpStatus.OK);
     }
 }

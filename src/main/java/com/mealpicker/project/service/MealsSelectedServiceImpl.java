@@ -109,6 +109,9 @@ public class MealsSelectedServiceImpl implements MealsSelectedService {
             throw new APIException("Recipe " + recipe.getRecipeName() + " already exists in the meals selected cart");
         }
 
+        //If mealItem already exists for this meals selected cart and recipe, then add to the quantity
+
+
         // if (recipe.getQuantity() == 0) {
         //     throw new APIException(recipe.getRecipeName() + " is not available");
         // }
@@ -222,15 +225,16 @@ public class MealsSelectedServiceImpl implements MealsSelectedService {
         if (mealItem == null) {
             throw new ResourceNotFoundException("Recipe", "recipeId", recipeId);
         }
+        System.out.println("Meal item is not null");
+        System.out.println("Cart Id: " + mealsSelected.getMealsSelectedId() + ", Recipe to be deleted: " + mealItem.getRecipe().getRecipeId());
+        // mealItemRepository.deleteMealItemByRecipeIdAndMealsSelectedId(mealsSelectedId, recipeId);
 
-        mealItemRepository.deleteMealItemByRecipeIdAndMealsSelectedId(mealsSelectedId, recipeId);
-        
         // Do I need to remove this mealItem from mealsSelected array of mealItems and then save mealsSelected??
         List<MealItem> mealItems = mealsSelected.getMealItems();
         mealItems.removeIf(mi -> mi.getRecipe().getRecipeId().equals(recipeId));
         mealsSelected.setMealItems(mealItems);
-
         mealsSelectedRepository.save(mealsSelected);
+        mealItemRepository.delete(mealItem);
 
         return "Recipe " + mealItem.getRecipe().getRecipeName() + " removed from the meals selected cart !!!";
     }
