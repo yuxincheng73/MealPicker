@@ -91,12 +91,12 @@ public class RecipeServiceImpl implements RecipeService {
 
         if (recipeCategory != null && !recipeCategory.isEmpty()) {
             spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.like(root.get("recipeCategory").get("recipeCategoryName"), recipeCategory));
+                    criteriaBuilder.like(root.get("recipeCategory").get("categoryRecipeName"), recipeCategory));
         }
 
         if (recipeCuisine != null && !recipeCuisine.isEmpty()) {
             spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.like(root.get("recipeCuisine").get("recipeCuisineName"), recipeCuisine));
+                    criteriaBuilder.like(root.get("recipeCuisine").get("cuisine"), recipeCuisine));
         }
 
         Page<Recipe> pageRecipes = recipeRepository.findAll(spec, pageDetails);
