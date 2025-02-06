@@ -4,7 +4,7 @@ import { BiUser } from 'react-icons/bi';
 import { FaShoppingCart } from 'react-icons/fa';
 import { IoExitOutline } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import BackDrop from './BackDrop';
 import { logOutUser } from '../store/actions';
 
