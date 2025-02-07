@@ -12,7 +12,7 @@ const Recipes = () => {
     const { isLoading, errorMessage } = useSelector(
         (state) => state.errors
     );
-    const {recipes, recipe_categories, cuisine, pagination} = useSelector(
+    const {recipes, recipeCategories, cuisine, pagination} = useSelector(
         (state) => state.recipes
     )
     const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const Recipes = () => {
 
     return (
         <div className="lg:px-14 sm:px-8 px-4 py-14 2xl:w-[90%] 2xl:mx-auto">
-            <Filter recipe_categories={recipe_categories ? recipe_categories : []}/>
+            <Filter recipeCategories={recipeCategories ? recipeCategories : []}/>
             {isLoading ? (
                 <Loader />
             ) : errorMessage ? (

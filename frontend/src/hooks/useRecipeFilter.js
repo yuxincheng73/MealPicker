@@ -22,7 +22,7 @@ const useRecipeFilter = () => {
         const cuisineParams = searchParams.get("cuisine") || null;
         const ingredientsParams = searchParams.get("ingredients") || null;
         const keyword = searchParams.get("keyword") || null;
-        params.set("sortBy","price"); // WHAT TO SET THIS PARAMETER??
+        params.set("sortBy","recipeName"); // WHAT TO SET THIS PARAMETER??
         params.set("sortOrder", sortOrder);
 
         if (recipeCategoryParams) {
