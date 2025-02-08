@@ -7,7 +7,9 @@ import store from './store/reducers/store.js'
 
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode store={store}>
-    <App />
-  </StrictMode>,
+  <Provider store={store}>
+    <StrictMode>
+        <App />
+    </StrictMode>
+  </Provider>,
 )

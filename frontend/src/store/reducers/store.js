@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { recipeReducer } from "./RecipeReducer";
+import { recipeReducer } from "./recipeReducer";
 import { errorReducer } from "./errorReducer";
 import { mealsselectedcartReducer } from "./mealsselectedcartReducer";
 import { authReducer } from "./authReducer";
@@ -14,7 +14,7 @@ const mealItems = localStorage.getItem("mealItems")
 
 const initialState = {
     auth: { user: user },
-    carts: { cart: mealItems },
+    mealsselectedcarts: { mealsselectedcart: mealItems },
 };
 
 export const store = configureStore({
