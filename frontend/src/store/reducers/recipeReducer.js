@@ -2,6 +2,7 @@ const initialState = {
     recipes: null,
     recipeCategories: null,
     cuisines: null,
+    ingredients: null,
     pagination: {},
 };
 
@@ -39,6 +40,20 @@ export const recipeReducer = (state = initialState, action) => {
             return {
                 ...state,
                 cuisines: action.payload,
+                pagination: {
+                    ...state.pagination,
+                    pageNumber: action.pageNumber,
+                    pageSize: action.pageSize,
+                    totalElements: action.totalElements,
+                    totalPages: action.totalPages,
+                    lastPage: action.lastPage,
+                },
+            };
+
+        case "FETCH_INGREDIENTS":
+            return {
+                ...state,
+                ingredients: action.payload,
                 pagination: {
                     ...state.pagination,
                     pageNumber: action.pageNumber,

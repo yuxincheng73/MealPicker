@@ -3,7 +3,7 @@ import RecipeCard from "./shared/RecipeCard";
 const recipes = [
     {
         image: "https://embarkx.com/sample/placeholder.png",
-        productName: "iPhone 13 Pro Max",
+        recipeName: "iPhone 13 Pro Max",
         description:
           "The iPhone 13 Pro Max offers exceptional performance with its A15 Bionic chip, stunning Super Retina XDR display, and advanced camera features for breathtaking photos.",
         specialPrice: 720,
@@ -11,7 +11,7 @@ const recipes = [
       },
       {
         image: "https://embarkx.com/sample/placeholder.png",
-        productName: "Samsung Galaxy S21",
+        recipeName: "Samsung Galaxy S21",
         description:
           "Experience the brilliance of the Samsung Galaxy S21 with its vibrant AMOLED display, powerful camera, and sleek design that fits perfectly in your hand.",
         specialPrice: 699,
@@ -19,7 +19,7 @@ const recipes = [
       },
       {
         image: "https://embarkx.com/sample/placeholder.png",
-        productName: "Google Pixel 6",
+        recipeName: "Google Pixel 6",
         description:
           "The Google Pixel 6 boasts cutting-edge AI features, exceptional photo quality, and a stunning display, making it a perfect choice for Android enthusiasts.",
         price: 599,
@@ -57,9 +57,9 @@ const About = () => {
                {recipes.map((recipe, index) => (
                 <RecipeCard 
                     key={index}
-                    image={product.image}
-                    recipeName={product.productName}
-                    description={product.description}
+                    image={recipe.image}
+                    recipeName={recipe.recipeName}
+                    description={recipe.description}
                     about
                 />
                ))

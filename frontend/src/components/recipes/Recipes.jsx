@@ -2,7 +2,7 @@ import { FaExclamationTriangle } from "react-icons/fa";
 import RecipeCard from "../shared/RecipeCard";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { fetchRecipeCategories } from "../../store/actions";
+import { fetchRecipeCategories, fetchCuisines, fetchIngredients } from "../../store/actions";
 import Filter from "./Filter";
 import useRecipeFilter from "../../hooks/useRecipeFilter";
 import Loader from "../shared/Loader";
@@ -12,7 +12,7 @@ const Recipes = () => {
     const { isLoading, errorMessage } = useSelector(
         (state) => state.errors
     );
-    const {recipes, recipeCategories, cuisine, pagination} = useSelector(
+    const {recipes, recipeCategories, cuisines, ingredients, pagination} = useSelector(
         (state) => state.recipes
     )
     const dispatch = useDispatch();
@@ -20,11 +20,13 @@ const Recipes = () => {
 
     useEffect(() => {
         dispatch(fetchRecipeCategories());
+        dispatch(fetchCuisines());
+        dispatch(fetchIngredients());
     }, [dispatch]);
 
     return (
         <div className="lg:px-14 sm:px-8 px-4 py-14 2xl:w-[90%] 2xl:mx-auto">
-            <Filter recipeCategories={recipeCategories ? recipeCategories : []}/>
+            <Filter recipeCategories={recipeCategories ? recipeCategories : []} cuisines={cuisines ? cuisines : []}  ingredients={ingredients ? ingredients : []} />
             {isLoading ? (
                 <Loader />
             ) : errorMessage ? (
@@ -44,7 +46,7 @@ const Recipes = () => {
                     <div className="flex justify-center pt-10">
                         <Paginations 
                             numberOfPage = {pagination?.totalPages}
-                            totalProducts = {pagination?.totalElements}/>
+                            totalRecipes = {pagination?.totalElements}/>
                     </div>
                 </div>
             )}

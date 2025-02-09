@@ -40,6 +40,7 @@ import com.mealpicker.project.repositories.IngredientRepository;
 import com.mealpicker.project.repositories.MealsSelectedRepository;
 import com.mealpicker.project.repositories.RecipeRepository;
 
+import jakarta.persistence.criteria.Path;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -77,7 +78,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public RecipeResponse getAllRecipes(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder,
-            String keyword, String recipeCategory, String recipeCuisine) {
+            String keyword, String recipeCategory, String cuisine, List<String> ingredients) {
         Sort sortByAndOrder = sortOrder.equalsIgnoreCase("asc")
                 ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
@@ -91,12 +92,30 @@ public class RecipeServiceImpl implements RecipeService {
 
         if (recipeCategory != null && !recipeCategory.isEmpty()) {
             spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.like(root.get("recipeCategory").get("categoryRecipeName"), recipeCategory));
+                    criteriaBuilder.like(root.get("categoryRecipe").get("categoryRecipeName"), recipeCategory));
         }
 
-        if (recipeCuisine != null && !recipeCuisine.isEmpty()) {
+        if (cuisine != null && !cuisine.isEmpty()) {
             spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.like(root.get("recipeCuisine").get("cuisine"), recipeCuisine));
+                    criteriaBuilder.like(root.get("cuisine").get("cuisineName"), cuisine));
+        }
+
+        if (ingredients != null && !ingredients.isEmpty()) {
+                var ingredientsSpec = ingredients.stream().map(i -> {
+                        System.out.println("INGREDIENT: " + i);
+                        Specification<Recipe> ingredientSpec = (root, query, criteriaBuilder) -> {
+                                Path<String> ingredientNameField = root.get("ingredients").get("ingredientName");
+                                query.distinct(true);
+                                return criteriaBuilder.like(ingredientNameField, i);
+                        }; 
+                        return ingredientSpec;
+                }).reduce(Specification::or).get();
+                spec = spec.and(ingredientsSpec);
+                // for (String ingredient : ingredients) {
+                //         System.out.println("INGREDIENT: " + ingredient);
+                //         spec = spec.and((root, query, criteriaBuilder) ->
+                //                 criteriaBuilder.like(root.get("ingredients").get("ingredientName"), ingredient));
+                // }
         }
 
         Page<Recipe> pageRecipes = recipeRepository.findAll(spec, pageDetails);

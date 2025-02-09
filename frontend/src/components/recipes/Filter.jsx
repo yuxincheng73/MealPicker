@@ -1,4 +1,4 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, Tooltip } from "@mui/material";
+import { Button, FormControl, InputLabel, MenuItem, Select, Tooltip, Checkbox } from "@mui/material";
 import { useEffect, useState } from "react";
 import { FiArrowDown, FiArrowUp, FiRefreshCw, FiSearch } from "react-icons/fi";
 import { useLocation, useNavigate, useSearchParams } from "react-router";
@@ -11,7 +11,8 @@ const Filter = ({ recipeCategories, cuisines, ingredients }) => {
     
     const [recipeCategory, setCategory] = useState("all");
     const [cuisine, setCuisine] = useState("all");
-    const [ingredient, setIngredient] = useState("all");
+    //const [ingredient, setIngredient] = useState("all");
+    const [ingredient, setIngredient] = useState(["all"]);
     const [sortOrder, setSortOrder] = useState("asc");
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -19,7 +20,7 @@ const Filter = ({ recipeCategories, cuisines, ingredients }) => {
     useEffect(() => {
         const currentRecipeCategory = searchParams.get("recipeCategory") || "all";
         const currentCuisine = searchParams.get("cuisine") || "all";
-        const currentIngredients = searchParams.get("ingredients") || "all";
+        const currentIngredients = searchParams.getAll("ingredients") || ["all"];
         const currentSortOrder = searchParams.get("sortby") || "asc";
         const currentSearchTerm = searchParams.get("keyword") || "";
 
@@ -74,14 +75,32 @@ const Filter = ({ recipeCategories, cuisines, ingredients }) => {
 
     // Handle filtering by ingredient
     const handleIngredientChange = (event) => {
-        const selectedIngredient = event.target.value;
-
-        if (selectedIngredient === "all") {
+        const selectedIngredients = event.target.value;
+        const selectedIngredient = selectedIngredients.at(-1);
+        console.log("selected ingredient: " + selectedIngredient);
+        console.log("existing ingredient: " + ingredient);
+        if (selectedIngredients.length == 0) params.delete("ingredients");
+        else if (selectedIngredient === "all") {
             params.delete("ingredients");
+        } 
+        // Unchecking existing ingredient
+        else if (ingredient.includes(selectedIngredient)) {
+            //find unchecked ingredient
+            let difference = ingredient.filter(x => !selectedIngredients.includes(x));
+            console.log("REMOVING INGREDIENT: " + difference);
+            params.delete("ingredients", difference);
         } else {
-            params.set("ingredients", selectedIngredient);
-        }
+
+        console.log("NEW INGREDIENTS: " + selectedIngredients);
+        // if (selectedIngredient === "all") {
+        //     params.delete("ingredients");
+        // } else {
+            params.append("ingredients", selectedIngredient);
+            // selectedIngredient.forEach(element => params.append("ingredients", element));
+            // params.set("ingredients", selectedIngredient);
+        }  
         navigate(`${pathname}?${params}`);
+        console.log("query: " + `${pathname}?${params}`);
         setIngredient(event.target.value);
     };
 
@@ -129,8 +148,8 @@ const Filter = ({ recipeCategories, cuisines, ingredients }) => {
                          >
                             <MenuItem value="all">All</MenuItem>
                             {recipeCategories.map((item) => (
-                                <MenuItem key={item.recipeCategoryId} value={item.recipeCategoryName}>
-                                    {item.recipeCategoryName}
+                                <MenuItem key={item.categoryRecipeId} value={item.categoryRecipeName}>
+                                    {item.categoryRecipeName}
                                 </MenuItem>
                             ))}
                          </Select>
@@ -166,6 +185,7 @@ const Filter = ({ recipeCategories, cuisines, ingredients }) => {
                         <InputLabel id="ingredient-select-label">Ingredients</InputLabel>
                         <Select
                             labelId="ingredient-select-label"
+                            multiple
                             value={ingredient}
                             onChange={handleIngredientChange}
                             label="Ingredient"
@@ -174,6 +194,7 @@ const Filter = ({ recipeCategories, cuisines, ingredients }) => {
                             <MenuItem value="all">All</MenuItem>
                             {ingredients.map((item) => (
                                 <MenuItem key={item.ingredientId} value={item.ingredientName}>
+                                    <Checkbox checked={ingredient.includes(item.ingredientName)} />
                                     {item.ingredientName}
                                 </MenuItem>
                             ))}
@@ -197,7 +218,7 @@ const Filter = ({ recipeCategories, cuisines, ingredients }) => {
                 </Tooltip>
 
                 <button 
-                className="flex items-center gap-2 bg-rose-900 text-white px-3 py-2 rounded-md transition duration-300 ease-in shadow-md focus:outline-none"
+                className="flex items-center gap-2 bg-rose-900 text-white px-3 py-2 rounded-md transition duration-300 ease-in shadow-md focus:outline-none cursor-pointer"
                 onClick={handleClearFilters}
                 >
                     <FiRefreshCw className="font-semibold" size={16}/>

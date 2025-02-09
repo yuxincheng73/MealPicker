@@ -20,7 +20,8 @@ const useRecipeFilter = () => {
         const sortOrder = searchParams.get("sortby") || "asc";
         const recipeCategoryParams = searchParams.get("recipeCategory") || null;
         const cuisineParams = searchParams.get("cuisine") || null;
-        const ingredientsParams = searchParams.get("ingredients") || null;
+        const ingredientsParams = searchParams.getAll("ingredients") || null;
+        console.log("INGREDIENT PARAMS: " + ingredientsParams);
         const keyword = searchParams.get("keyword") || null;
         params.set("sortBy","recipeName"); // WHAT TO SET THIS PARAMETER??
         params.set("sortOrder", sortOrder);
@@ -34,11 +35,12 @@ const useRecipeFilter = () => {
         }
 
         if (cuisineParams) {
-            params.set("keyword", cuisineParams);
+            params.set("cuisine", cuisineParams);
         }
 
         if (ingredientsParams) {
-            params.set("keyword", ingredientsParams);
+            ingredientsParams.forEach(element => params.append("ingredients", element));
+            // params.set("ingredients", ingredientsParams);
         }
 
         const queryString = params.toString();

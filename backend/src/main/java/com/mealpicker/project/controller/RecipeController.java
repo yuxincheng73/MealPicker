@@ -1,6 +1,7 @@
 package com.mealpicker.project.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,13 +39,14 @@ public class RecipeController {
     public ResponseEntity<RecipeResponse> getAllRecipes(
             @RequestParam(name = "keyword", required = false) String keyword,
             @RequestParam(name = "recipeCategory", required = false) String recipeCategory,
-            @RequestParam(name = "recipeCuisine", required = false) String recipeCuisine,
+            @RequestParam(name = "cuisine", required = false) String cuisine,
+            @RequestParam(name = "ingredients", required = false) List<String> ingredients,
             @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
             @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_RECIPES_BY, required = false) String sortBy,
             @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIR, required = false) String sortOrder
     ){
-        RecipeResponse recipeResponse = recipeService.getAllRecipes(pageNumber, pageSize, sortBy, sortOrder, keyword, recipeCategory, recipeCuisine);
+        RecipeResponse recipeResponse = recipeService.getAllRecipes(pageNumber, pageSize, sortBy, sortOrder, keyword, recipeCategory, cuisine, ingredients);
         return new ResponseEntity<>(recipeResponse, HttpStatus.OK);
     }
 
