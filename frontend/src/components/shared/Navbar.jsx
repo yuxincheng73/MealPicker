@@ -12,6 +12,8 @@ const Navbar = () => {
     const path = useLocation().pathname;
     const [navbarOpen, setNavbarOpen] = useState(false);
     const { mealsselectedcart } = useSelector((state) => state.mealsselectedcarts);
+    // console.log("MEAL ITEMS LENGTH: " + JSON.parse(localStorage.getItem("mealItems")).length);
+    // const cartLength = JSON.parse(localStorage.getItem("mealItems")).length;
     const { user } = useSelector((state) => state.auth);
     
     return (
@@ -60,6 +62,7 @@ const Navbar = () => {
                     to="/mealsselectedcart">
                         <Badge
                             showZero
+                            // badgeContent={cartLength ? cartLength : 0}
                             badgeContent={mealsselectedcart?.length || 0}
                             color="primary"
                             overlap="circular"
@@ -76,9 +79,9 @@ const Navbar = () => {
                 ) : (
                 <li className="font-[500] transition-all duration-150">
                    <Link className="flex items-center space-x-2 px-4 py-[6px] 
-                            bg-gradient-to-r from-purple-600 to-red-500 
+                             bg-emerald-700
                             text-white font-semibold rounded-md shadow-lg 
-                            hover:from-purple-500 hover:to-red-400 transition 
+                            hover:bg-green-400  transition 
                             duration-300 ease-in-out transform "
                     to="/login">
                         <FaSignInAlt />

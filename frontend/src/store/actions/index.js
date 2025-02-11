@@ -96,8 +96,28 @@ export const fetchIngredients = () => async (dispatch) => {
     }
 };
 
-// Fetch by recipe keyword
-
+// Get all meals selected cart of current user
+export const fetchMealsSelectedCart = () => async (dispatch) => {
+    try {
+        console.log("CURRENTLY FETCHING");
+        dispatch({ type: "IS_FETCHING" });
+        const { data } = await api.get(`/meals_selected/users/meals`, { withCredentials: true , headers: {
+            "Content-type": "application/json",
+        }});
+        dispatch({
+            type: "FETCH_MEALS_SELECTED",
+            savedmealsselectedcartId: data.mealsSelectedId,
+            payload: data.recipes,
+        });
+        dispatch({ type: "IS_SUCCESS" });
+    } catch (error) {
+        console.log(error);
+        dispatch({ 
+            type: "IS_ERROR",
+            payload: error?.response?.data?.message || "Failed to fetch saved meals selected",
+         });
+    }
+};
 
 // Add recipe to meals selected cart
 export const addToCart = (data, qty = 1, toast) => 
@@ -113,6 +133,50 @@ export const addToCart = (data, qty = 1, toast) =>
         localStorage.setItem("mealItems", JSON.stringify(getState().mealsselectedcarts.mealsselectedcart));
 };
 
+// Save meals selected Cart 
+export const postCart = (recipeId) => async (dispatch) => {
+        try {
+            const { response } = await api.post(`/meals_selected/recipes/${recipeId}/quantity/1`, null, { withCredentials: true });
+            dispatch({
+                type: "POST_MEALS_SELECTED",
+                savedmealsselectedcartId: response.mealsSelectedId,
+                payload: response.recipes,
+            });
+        } catch (error) {
+            console.log(error);
+            dispatch({ 
+                type: "IS_ERROR",
+                payload: error?.response?.data?.message || "Failed to post meals selected",
+             });
+        }
+};
+
+export const updateCart = (data) =>
+    async (dispatch) => {
+        try {
+            const { response } = await api.put(`/meals_selected/recipes/${data.recipeId}/quantity/${data.quantity}`, {}, { withCredentials: true , headers: {
+                'Access-Control-Allow-Origin': '*',
+            }});
+            dispatch({
+                type: "UPDATE_MEALS_SELECTED",
+                savedmealsselectedcartId: response.mealsSelectedId,
+                payload: response.recipes,
+            });
+        } catch (error) {
+            console.log(error);
+            dispatch({ 
+                type: "IS_ERROR",
+                payload: error?.response?.data?.message || "Failed to update meals selected",
+             });
+        }
+};
+
+export const resetCart = () =>
+    (dispatch, getState) => {
+        dispatch({
+            type: "RESET_CART",
+        });
+};
 
 export const increaseCartQuantity = 
     (data, toast, currentQuantity, setCurrentQuantity) =>
@@ -161,6 +225,9 @@ export const authenticateSignInUser
             const { data } = await api.post("/auth/signin", sendData);
             dispatch({ type: "LOGIN_USER", payload: data });
             localStorage.setItem("auth", JSON.stringify(data));
+            const cookie = data.jwtToken;
+            document.cookie = cookie;
+
             reset();
             toast.success("Login Success");
             navigate("/");

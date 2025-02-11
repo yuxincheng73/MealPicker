@@ -26,4 +26,7 @@ public interface MealsSelectedService {
     @Transactional
     MealsSelectedDTO updateRecipeQuantityInMealsSelected(Long recipeId, int quantity);
 
+    @Transactional
+    MealsSelectedDTO updateRecipeQuantityInMealsSelectedByQuantity(Long recipeId, String quantity);
+
 }

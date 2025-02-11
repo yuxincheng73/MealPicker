@@ -3,17 +3,46 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
 import ItemContent from "./ItemContent";
 import MealsSelectedCartEmpty from "./MealsSelectedCartEmpty";
+import { fetchMealsSelectedCart, resetCart, postCart, updateCart } from "../../store/actions";
+import { useEffect } from "react";
 
 const MealsSelectedCart = () => {
     const dispatch = useDispatch();
+    
+    // Currently this is retrieved from local storage 
     const { mealsselectedcart } = useSelector((state) => state.mealsselectedcarts);
-    const newmealsselectedcart = { ...mealsselectedcart };
+    const { savedmealsselectedcart } = useSelector((state) => state.savedmealsselectedcarts);
+    // console.log("SAVED MEALS SELECTED: " + savedmealsselectedcart);
+    const { user } = useSelector((state) => state.auth);
 
-    // newmealsselectedcart.totalPrice = mealsselectedcart?.reduce(
-    //     (acc, cur) => acc + Number(cur?.specialPrice) * Number(cur?.quantity), 0
-    // );
+    useEffect(() => {
+        dispatch(fetchMealsSelectedCart());
+        console.log("SAVED MEALS SELECTED DISPATCH");
+    }, [dispatch]);
 
-    if (!mealsselectedcart || mealsselectedcart.length === 0) return <CartEmpty />;
+    console.log("SAVED MEALS SELECTED: " + savedmealsselectedcart);
+
+    const handleSaveChange = () => {
+        mealsselectedcart.forEach(element => {
+            console.log(element.recipeName);
+            const existingRecipe = savedmealsselectedcart.find((item) => item.recipeId === element.recipeId);
+
+            if(existingRecipe) {
+                // update API
+                console.log("UPDATE MEALS SELECTED");
+                dispatch(updateCart({recipeId: element.recipeId, quantity: element.quantity}));
+            } else {
+                // POST API
+                console.log("POST MEALS SELECTED");
+                dispatch(postCart(element.recipeId));
+            }
+        });
+        //remove localStorage mealitems
+        localStorage.removeItem("mealItems");
+        dispatch(resetCart());
+    };
+
+    if (!mealsselectedcart || mealsselectedcart.length === 0) return <MealsSelectedCartEmpty />;
 
     return (
         <div className="lg:px-14 sm:px-8 px-4 py-10">
@@ -25,13 +54,17 @@ const MealsSelectedCart = () => {
                 <p className="text-lg text-gray-600 mt-2">All your selected items</p>
             </div>
 
-            <div className="grid md:grid-cols-5 grid-cols-4 gap-4 pb-2 font-semibold items-center">
+            <div className="grid md:grid-cols-5 grid-cols-3 gap-4 pb-2 font-semibold items-center">
                 <div className="md:col-span-2 justify-self-start text-lg text-slate-800 lg:ps-4">
                     Recipe
                 </div>
 
                 <div className="justify-self-center text-lg text-slate-800">
                     Quantity
+                </div>
+
+                <div className="justify-self-center text-lg text-slate-800">
+                    Date
                 </div>
             </div>
 
@@ -43,16 +76,16 @@ const MealsSelectedCart = () => {
             <div className="border-t-[1.5px] border-slate-200 py-4 flex sm:flex-row sm:px-0 px-2 flex-col sm:justify-between gap-4">
                 <div></div>
                 <div className="flex text-sm gap-1 flex-col">
-                    <Link className="w-full flex justify-end" to="/mealarrangement">
+                    <Link className="w-full flex justify-end" to="/mealsselected">
                     <button
-                        onClick={() => {}}
-                        className="font-semibold w-[300px] py-2 px-4 rounded-sm bg-customBlue text-white flex items-center justify-center gap-2 hover:text-gray-300 transition duration-500">
+                        onClick={handleSaveChange}
+                        className="font-semibold w-[300px] border-slate-800 border-[1px] py-2 px-4 rounded-sm bg-customBlue text-slate-800 flex items-center justify-center gap-2 hover:text-gray-300 transition duration-500">
                         <MdShoppingCart size={20} />
-                        Meal Arrangement
+                        Save
                     </button>
                     </Link>
 
-                    <Link className="flex gap-2 items-center mt-2 text-slate-500" to="/recipes">
+                    <Link className="flex gap-2 items-center w-full justify-center mt-2 text-slate-500" to="/recipes">
                         <MdArrowBack />
                         <span>Continue Browsing</span>
                     </Link>

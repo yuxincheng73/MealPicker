@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { decreaseCartQuantity, increaseCartQuantity, removeFromCart } from "../../store/actions";
 import toast from "react-hot-toast";
 import truncateText from "../../utils/truncateText";
+import { Button, FormControl, InputLabel, MenuItem, Select, Tooltip, Checkbox } from "@mui/material";
 
 const ItemContent = ({
     recipeId,
@@ -16,6 +17,7 @@ const ItemContent = ({
   }) => {
     const [currentQuantity, setCurrentQuantity] = useState(quantity);
     const dispatch = useDispatch();
+    const [date, setDate] = useState("");
 
     const handleQtyIncrease = (mealItems) => {
         dispatch(increaseCartQuantity(
@@ -37,9 +39,18 @@ const ItemContent = ({
     const removeItemFromCart = (mealItems) => {
         dispatch(removeFromCart(mealItems, toast));
     };
+
+    const handleDateChange = (event) => {
+        const selectedDate = event.target.value;
+        setDate(event.target.value);
+    };
+
+    const weekDates = [
+        "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"
+    ];
     
     return (
-        <div className="grid md:grid-cols-5 grid-cols-4 md:text-md text-sm gap-4   items-center  border-[1px] border-slate-200  rounded-md  lg:px-4  py-4 p-2">
+        <div className="grid md:grid-cols-5 grid-cols-3 md:text-md text-sm gap-4   items-center  border-[1px] border-slate-200  rounded-md  lg:px-4  py-4 p-2">
             <div className="md:col-span-2 justify-self-start flex  flex-col gap-2 ">
                 <div className="flex md:flex-row flex-col lg:gap-4 sm:gap-3 gap-0 items-start ">
                    <h3 className="lg:text-[17px] text-sm font-semibold text-slate-600">
@@ -89,6 +100,28 @@ const ItemContent = ({
                         recipeId,
                         quantity,
                     })}}/>
+            </div>
+
+            <div className="justify-self-center">
+                <FormControl
+                    className="text-slate-800 border-slate-700"
+                    variant="outlined"
+                    size="medium">
+                        <InputLabel id="cuisine-select-label">Date</InputLabel>
+                        <Select
+                            labelId="cuisine-select-label"
+                            value={date}
+                            onChange={handleDateChange}
+                            label="Date"
+                            className="min-w-[120px] text-slate-800 border-slate-700"
+                         >
+                            {weekDates.map((date, index) => (
+                                <MenuItem key={index} value={date}>
+                                    {date}
+                                </MenuItem>
+                            ))}
+                         </Select>
+                </FormControl>
             </div>
         </div>
     )

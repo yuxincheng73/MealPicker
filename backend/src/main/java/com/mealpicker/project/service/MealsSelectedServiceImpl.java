@@ -234,7 +234,8 @@ public class MealsSelectedServiceImpl implements MealsSelectedService {
         mealItems.removeIf(mi -> mi.getRecipe().getRecipeId().equals(recipeId));
         mealsSelected.setMealItems(mealItems);
         mealsSelectedRepository.save(mealsSelected);
-        mealItemRepository.delete(mealItem);
+        // mealItemRepository.delete(mealItem);
+        mealItemRepository.deleteMealItemByRecipeIdAndMealsSelectedId(mealsSelectedId, recipeId);
 
         return "Recipe " + mealItem.getRecipe().getRecipeName() + " removed from the meals selected cart !!!";
     }
@@ -265,6 +266,71 @@ public class MealsSelectedServiceImpl implements MealsSelectedService {
         mealsSelected.setMealItems(mealItems);
 
         mealsSelectedRepository.save(mealsSelected);
+    }
+
+    @Override
+    @Transactional
+    public MealsSelectedDTO updateRecipeQuantityInMealsSelectedByQuantity(Long recipeId, String quantity) {
+        String emailId = authUtil.loggedInEmail();
+        MealsSelected mealsSelected = mealsSelectedRepository.findMealsSelectedByEmail(emailId);
+        Long mealsSelectedId  = mealsSelected.getMealsSelectedId();
+
+        if (mealsSelected == null) {
+            throw new ResourceNotFoundException("Meals Selected", "mealsSelectedId", mealsSelectedId);
+        }
+
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Recipe", "recipeId", recipeId));
+
+        if (recipe.getQuantity() == 0) {
+            throw new APIException(recipe.getRecipeName() + " is not available");
+        }
+
+        // if (recipe.getQuantity() < quantity) {
+        //     throw new APIException("Please, make an order of the " + recipe.getRecipeName()
+        //             + " less than or equal to the quantity " + recipe.getQuantity() + ".");
+        // }
+
+        MealItem mealItem = mealItemRepository.findMealItemByRecipeIdAndMealsSelectedId(mealsSelectedId, recipeId);
+
+        if (mealItem == null) {
+            throw new APIException("Recipe " + recipe.getRecipeName() + " not available in the meals selected cart!!!");
+        }
+
+        // Calculate new quantity
+        int newQuantity = Integer.parseInt(quantity);
+
+        // Validation to prevent negative quantities
+        if (newQuantity < 0) {
+            throw new APIException("The resulting quantity cannot be negative.");
+        }
+
+        // If recipe quantity is 0, then remove recipe from meals selected cart 
+        if (newQuantity == 0){
+            deleteRecipeFromMealsSelected(mealsSelectedId, recipeId);
+        } else {
+            mealItem.setQuantity(newQuantity);
+            //mealsSelectedRepository.save(mealsSelected);
+        }
+
+        MealItem updatedMealItem = mealItemRepository.save(mealItem);
+        if(updatedMealItem.getQuantity() == 0){
+            mealItemRepository.deleteById(updatedMealItem.getMealItemId());
+        }
+
+
+        MealsSelectedDTO mealsSelectedDTO = modelMapper.map(mealsSelected, MealsSelectedDTO.class);
+
+        List<MealItem> mealItems = mealsSelected.getMealItems();
+        List<RecipeDTO> recipesDTOs = mealItems.stream().map(item -> {
+            RecipeDTO recipeDTO = modelMapper.map(item.getRecipe(), RecipeDTO.class);
+            recipeDTO.setQuantity(item.getQuantity());
+            return recipeDTO;
+        }).toList();
+
+        mealsSelectedDTO.setRecipes(recipesDTOs);
+
+        return mealsSelectedDTO;
     }
 
 }

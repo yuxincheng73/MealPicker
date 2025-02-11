@@ -12,6 +12,7 @@ import PrivateRoute from './components/PrivateRoute'
 import Register from './components/auth/Register'
 import Recipes from './components/recipes/Recipes'
 import MealsSelectedCart from './components/mealsselectedcart/MealsSelectedCart'
+import MealsSelected from './components/mealsselected/MealsSelected'
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path='/recipes' element={ <Recipes />}/>
           <Route path='/about' element={ <About />}/>
           <Route path='/mealsselectedcart' element={ <MealsSelectedCart />}/>
+          <Route path='/mealsselected' element={ <MealsSelected />}/>
         
           <Route path='/' element={<PrivateRoute publicPage />}>
             <Route path='/login' element={ <LogIn />}/>

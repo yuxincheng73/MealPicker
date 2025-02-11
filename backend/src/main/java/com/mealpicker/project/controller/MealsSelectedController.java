@@ -51,12 +51,21 @@ public class MealsSelectedController {
         return new ResponseEntity<MealsSelectedDTO>(mealsSelectedDTO, HttpStatus.CREATED);
     }
 
-    // Update recipe in meals selected cart 
-    @PutMapping("/meals_selected/recipes/{recipeId}/quantity/{operation}")
+    // Update recipe in meals selected cart by operation
+    @PutMapping("/meals_selected/recipes/{recipeId}/quantity/operation/{operation}")
     public ResponseEntity<MealsSelectedDTO> updateMealsSelectedRecipe(@PathVariable Long recipeId,
                                                      @PathVariable String operation) {
         MealsSelectedDTO mealsSelectedDTO = mealsSelectedService.updateRecipeQuantityInMealsSelected(recipeId,
                 operation.equalsIgnoreCase("delete") ? -1 : 1);
+
+        return new ResponseEntity<MealsSelectedDTO>(mealsSelectedDTO, HttpStatus.OK);
+    }
+
+    // Update recipe in meals selected cart by quantity
+    @PutMapping("/meals_selected/recipes/{recipeId}/quantity/{quantity}")
+    public ResponseEntity<MealsSelectedDTO> updateMealsSelectedRecipeByQuantity(@PathVariable Long recipeId,
+                                                     @PathVariable String quantity) {
+        MealsSelectedDTO mealsSelectedDTO = mealsSelectedService.updateRecipeQuantityInMealsSelectedByQuantity(recipeId, quantity);
 
         return new ResponseEntity<MealsSelectedDTO>(mealsSelectedDTO, HttpStatus.OK);
     }

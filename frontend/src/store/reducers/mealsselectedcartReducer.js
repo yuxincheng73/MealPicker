@@ -38,6 +38,13 @@ export const mealsselectedcartReducer = (state = initialState, action) => {
                     (item) => item.recipeId !== action.payload.recipeId
                 ),
             };
+
+        case "RESET_CART":
+            return {
+                mealsselectedcart: [],
+                mealsselectedcartId: null,
+            };
+
         default:
             return state;
     }
