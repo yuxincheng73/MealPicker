@@ -13,6 +13,7 @@ import Register from './components/auth/Register'
 import Recipes from './components/recipes/Recipes'
 import MealsSelectedCart from './components/mealsselectedcart/MealsSelectedCart'
 import MealsSelected from './components/mealsselected/MealsSelected'
+import RecipeGenerator from './components/recipegenerator/recipeGenerator'
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path='/' element={ <Home />}/>
           <Route path='/recipes' element={ <Recipes />}/>
           <Route path='/about' element={ <About />}/>
+          <Route path='/recipegenerator' element={ <RecipeGenerator />}/>
           <Route path='/mealsselectedcart' element={ <MealsSelectedCart />}/>
           <Route path='/mealsselected' element={ <MealsSelected />}/>
         

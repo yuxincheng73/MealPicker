@@ -262,3 +262,23 @@ export const logOutUser = (navigate) => (dispatch) => {
     localStorage.removeItem("auth");
     navigate("/login");
 };
+
+export const generateRecipe = (query) => async (dispatch) => {
+    try {
+        const response  = await api.get(`/recipe_generator?ingredients=${query.ingredients}&cuisine=${query.cuisine}&categoryRecipe=${query.categoryRecipe}`);
+        console.log("response: " + response.data);
+        const data = await response.data;
+        console.log("data: " + data);
+        dispatch({
+            type: "GENERATE_RECIPE",
+            payload: data,
+        });
+    } catch (error) {
+        console.log(error);
+        dispatch({ 
+            type: "IS_ERROR",
+            payload: error?.response?.data?.message || "Failed to generate recipes",
+         });
+    }
+};
+

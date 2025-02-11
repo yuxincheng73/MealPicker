@@ -4,6 +4,7 @@ import { errorReducer } from "./errorReducer";
 import { mealsselectedcartReducer } from "./mealsselectedcartReducer";
 import { authReducer } from "./authReducer";
 import { savedmealsselectedcartReducer } from "./savedmealsselectedcartReducer";
+import { recipegeneratorReducer } from "./recipegeneratorReducer";
 
 
 const user = localStorage.getItem("auth")
@@ -26,6 +27,7 @@ export const store = configureStore({
         mealsselectedcarts: mealsselectedcartReducer,
         savedmealsselectedcarts: savedmealsselectedcartReducer,
         auth: authReducer,
+        recipegenerator: recipegeneratorReducer,
     },
     preloadedState: initialState,
 });

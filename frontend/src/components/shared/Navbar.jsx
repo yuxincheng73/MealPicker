@@ -57,6 +57,28 @@ const Navbar = () => {
 
                 <li className="font-[500] transition-all duration-150">
                    <Link className={`${
+                    path === "/recipegenerator" ? "text-white font-semibold" : "text-gray-200"
+                   } hover:text-amber-50` }
+                    to="/recipegenerator">
+                        Recipe Generator
+                   </Link> 
+                </li>
+
+                {(user && user.id) ? (
+                    <li className="font-[500] transition-all duration-150">
+                        <Link className={`${
+                            path === "/mealsselected" ? "text-white font-semibold" : "text-gray-200"
+                        } hover:text-amber-50`}
+                            to="/mealsselected">
+                                Your Meals
+                        </Link> 
+                    </li>
+                ) : (
+                    <></>
+                )}
+
+                <li className="font-[500] transition-all duration-150">
+                   <Link className={`${
                     path === "/mealsselectedcart" ? "text-white font-semibold" : "text-gray-200"
                    } hover:text-amber-50`}
                     to="/mealsselectedcart">
